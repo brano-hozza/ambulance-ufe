@@ -51,7 +51,12 @@ export class HozzaAmbulanceWlApp {
     return (
       <Host>
         {element === 'editor' ? (
-          <hozza-ambulance-wl-editor entry-id={entryId} oneditor-closed={() => navigate('./list')}></hozza-ambulance-wl-editor>
+          <hozza-ambulance-wl-editor
+            ambulance-id={this.ambulanceId}
+            api-base={this.apiBase}
+            entry-id={entryId}
+            oneditor-closed={() => navigate('./list')}
+          ></hozza-ambulance-wl-editor>
         ) : (
           <hozza-ambulance-wl-list
             ambulance-id={this.ambulanceId}

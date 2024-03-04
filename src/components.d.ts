@@ -12,25 +12,13 @@ export namespace Components {
         "basePath": string;
     }
     interface HozzaAmbulanceWlEditor {
+        "ambulanceId": string;
+        "apiBase": string;
         "entryId": string;
     }
     interface HozzaAmbulanceWlList {
         "ambulanceId": string;
         "apiBase": string;
-    }
-    interface MyComponent {
-        /**
-          * The first name
-         */
-        "first": string;
-        /**
-          * The last name
-         */
-        "last": string;
-        /**
-          * The middle name
-         */
-        "middle": string;
     }
 }
 export interface HozzaAmbulanceWlEditorCustomEvent<T> extends CustomEvent<T> {
@@ -82,17 +70,10 @@ declare global {
         prototype: HTMLHozzaAmbulanceWlListElement;
         new (): HTMLHozzaAmbulanceWlListElement;
     };
-    interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
-    }
-    var HTMLMyComponentElement: {
-        prototype: HTMLMyComponentElement;
-        new (): HTMLMyComponentElement;
-    };
     interface HTMLElementTagNameMap {
         "hozza-ambulance-wl-app": HTMLHozzaAmbulanceWlAppElement;
         "hozza-ambulance-wl-editor": HTMLHozzaAmbulanceWlEditorElement;
         "hozza-ambulance-wl-list": HTMLHozzaAmbulanceWlListElement;
-        "my-component": HTMLMyComponentElement;
     }
 }
 declare namespace LocalJSX {
@@ -102,6 +83,8 @@ declare namespace LocalJSX {
         "basePath"?: string;
     }
     interface HozzaAmbulanceWlEditor {
+        "ambulanceId"?: string;
+        "apiBase"?: string;
         "entryId"?: string;
         "onEditor-closed"?: (event: HozzaAmbulanceWlEditorCustomEvent<string>) => void;
     }
@@ -110,25 +93,10 @@ declare namespace LocalJSX {
         "apiBase"?: string;
         "onEntry-clicked"?: (event: HozzaAmbulanceWlListCustomEvent<string>) => void;
     }
-    interface MyComponent {
-        /**
-          * The first name
-         */
-        "first"?: string;
-        /**
-          * The last name
-         */
-        "last"?: string;
-        /**
-          * The middle name
-         */
-        "middle"?: string;
-    }
     interface IntrinsicElements {
         "hozza-ambulance-wl-app": HozzaAmbulanceWlApp;
         "hozza-ambulance-wl-editor": HozzaAmbulanceWlEditor;
         "hozza-ambulance-wl-list": HozzaAmbulanceWlList;
-        "my-component": MyComponent;
     }
 }
 export { LocalJSX as JSX };
@@ -138,7 +106,6 @@ declare module "@stencil/core" {
             "hozza-ambulance-wl-app": LocalJSX.HozzaAmbulanceWlApp & JSXBase.HTMLAttributes<HTMLHozzaAmbulanceWlAppElement>;
             "hozza-ambulance-wl-editor": LocalJSX.HozzaAmbulanceWlEditor & JSXBase.HTMLAttributes<HTMLHozzaAmbulanceWlEditorElement>;
             "hozza-ambulance-wl-list": LocalJSX.HozzaAmbulanceWlList & JSXBase.HTMLAttributes<HTMLHozzaAmbulanceWlListElement>;
-            "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }
     }
 }
