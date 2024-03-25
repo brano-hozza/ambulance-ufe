@@ -24,6 +24,43 @@ import type { RequestArgs } from './base';
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError } from './base';
 
 /**
+ * 
+ * @export
+ * @interface Ambulance
+ */
+export interface Ambulance {
+    /**
+     * Unique identifier of the ambulance
+     * @type {string}
+     * @memberof Ambulance
+     */
+    'id': string;
+    /**
+     * Human readable display name of the ambulance
+     * @type {string}
+     * @memberof Ambulance
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Ambulance
+     */
+    'roomNumber': string;
+    /**
+     * 
+     * @type {Array<WaitingListEntry>}
+     * @memberof Ambulance
+     */
+    'waitingList'?: Array<WaitingListEntry>;
+    /**
+     * 
+     * @type {Array<Condition>}
+     * @memberof Ambulance
+     */
+    'predefinedConditions'?: Array<Condition>;
+}
+/**
  * Describes disease, symptoms, or other reasons of patient   visit
  * @export
  * @interface Condition
@@ -111,6 +148,122 @@ export interface WaitingListEntry {
 export const AmbulanceConditionsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
+         * Use this method to add new condition to the ambulance
+         * @summary Adds new condition to ambulance
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {Condition} condition Condition to add
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createCondition: async (ambulanceId: string, condition: Condition, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ambulanceId' is not null or undefined
+            assertParamExists('createCondition', 'ambulanceId', ambulanceId)
+            // verify required parameter 'condition' is not null or undefined
+            assertParamExists('createCondition', 'condition', condition)
+            const localVarPath = `/waiting-list/{ambulanceId}/condition`
+                .replace(`{${"ambulanceId"}}`, encodeURIComponent(String(ambulanceId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(condition, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Use this method to delete the specific condition from the ambulance.
+         * @summary Deletes specific condition
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {string} conditionCode pass the code of the particular condition
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteCondition: async (ambulanceId: string, conditionCode: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ambulanceId' is not null or undefined
+            assertParamExists('deleteCondition', 'ambulanceId', ambulanceId)
+            // verify required parameter 'conditionCode' is not null or undefined
+            assertParamExists('deleteCondition', 'conditionCode', conditionCode)
+            const localVarPath = `/waiting-list/{ambulanceId}/condition/{conditionCode}`
+                .replace(`{${"ambulanceId"}}`, encodeURIComponent(String(ambulanceId)))
+                .replace(`{${"conditionCode"}}`, encodeURIComponent(String(conditionCode)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * By using ambulanceId and conditionCode you can get details of particular condition
+         * @summary Provides details about condition
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {string} conditionCode pass the code of the particular condition
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCondition: async (ambulanceId: string, conditionCode: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ambulanceId' is not null or undefined
+            assertParamExists('getCondition', 'ambulanceId', ambulanceId)
+            // verify required parameter 'conditionCode' is not null or undefined
+            assertParamExists('getCondition', 'conditionCode', conditionCode)
+            const localVarPath = `/waiting-list/{ambulanceId}/condition/{conditionCode}`
+                .replace(`{${"ambulanceId"}}`, encodeURIComponent(String(ambulanceId)))
+                .replace(`{${"conditionCode"}}`, encodeURIComponent(String(conditionCode)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * By using ambulanceId you get list of predefined conditions
          * @summary Provides the list of conditions associated with ambulance
          * @param {string} ambulanceId pass the id of the particular ambulance
@@ -144,6 +297,50 @@ export const AmbulanceConditionsApiAxiosParamCreator = function (configuration?:
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Use this method to update content of the condition.
+         * @summary Updates specific condition
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {string} conditionCode pass the code of the particular condition
+         * @param {Condition} condition Condition to update
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateCondition: async (ambulanceId: string, conditionCode: string, condition: Condition, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ambulanceId' is not null or undefined
+            assertParamExists('updateCondition', 'ambulanceId', ambulanceId)
+            // verify required parameter 'conditionCode' is not null or undefined
+            assertParamExists('updateCondition', 'conditionCode', conditionCode)
+            // verify required parameter 'condition' is not null or undefined
+            assertParamExists('updateCondition', 'condition', condition)
+            const localVarPath = `/waiting-list/{ambulanceId}/condition/{conditionCode}`
+                .replace(`{${"ambulanceId"}}`, encodeURIComponent(String(ambulanceId)))
+                .replace(`{${"conditionCode"}}`, encodeURIComponent(String(conditionCode)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(condition, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -155,6 +352,42 @@ export const AmbulanceConditionsApiFp = function(configuration?: Configuration) 
     const localVarAxiosParamCreator = AmbulanceConditionsApiAxiosParamCreator(configuration)
     return {
         /**
+         * Use this method to add new condition to the ambulance
+         * @summary Adds new condition to ambulance
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {Condition} condition Condition to add
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createCondition(ambulanceId: string, condition: Condition, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Ambulance>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createCondition(ambulanceId, condition, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Use this method to delete the specific condition from the ambulance.
+         * @summary Deletes specific condition
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {string} conditionCode pass the code of the particular condition
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteCondition(ambulanceId: string, conditionCode: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteCondition(ambulanceId, conditionCode, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * By using ambulanceId and conditionCode you can get details of particular condition
+         * @summary Provides details about condition
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {string} conditionCode pass the code of the particular condition
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getCondition(ambulanceId: string, conditionCode: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Condition>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCondition(ambulanceId, conditionCode, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * By using ambulanceId you get list of predefined conditions
          * @summary Provides the list of conditions associated with ambulance
          * @param {string} ambulanceId pass the id of the particular ambulance
@@ -163,6 +396,19 @@ export const AmbulanceConditionsApiFp = function(configuration?: Configuration) 
          */
         async getConditions(ambulanceId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Condition>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getConditions(ambulanceId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Use this method to update content of the condition.
+         * @summary Updates specific condition
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {string} conditionCode pass the code of the particular condition
+         * @param {Condition} condition Condition to update
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateCondition(ambulanceId: string, conditionCode: string, condition: Condition, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Condition>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateCondition(ambulanceId, conditionCode, condition, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -176,6 +422,39 @@ export const AmbulanceConditionsApiFactory = function (configuration?: Configura
     const localVarFp = AmbulanceConditionsApiFp(configuration)
     return {
         /**
+         * Use this method to add new condition to the ambulance
+         * @summary Adds new condition to ambulance
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {Condition} condition Condition to add
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createCondition(ambulanceId: string, condition: Condition, options?: any): AxiosPromise<Ambulance> {
+            return localVarFp.createCondition(ambulanceId, condition, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Use this method to delete the specific condition from the ambulance.
+         * @summary Deletes specific condition
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {string} conditionCode pass the code of the particular condition
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteCondition(ambulanceId: string, conditionCode: string, options?: any): AxiosPromise<void> {
+            return localVarFp.deleteCondition(ambulanceId, conditionCode, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * By using ambulanceId and conditionCode you can get details of particular condition
+         * @summary Provides details about condition
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {string} conditionCode pass the code of the particular condition
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCondition(ambulanceId: string, conditionCode: string, options?: any): AxiosPromise<Condition> {
+            return localVarFp.getCondition(ambulanceId, conditionCode, options).then((request) => request(axios, basePath));
+        },
+        /**
          * By using ambulanceId you get list of predefined conditions
          * @summary Provides the list of conditions associated with ambulance
          * @param {string} ambulanceId pass the id of the particular ambulance
@@ -184,6 +463,18 @@ export const AmbulanceConditionsApiFactory = function (configuration?: Configura
          */
         getConditions(ambulanceId: string, options?: any): AxiosPromise<Array<Condition>> {
             return localVarFp.getConditions(ambulanceId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Use this method to update content of the condition.
+         * @summary Updates specific condition
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {string} conditionCode pass the code of the particular condition
+         * @param {Condition} condition Condition to update
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateCondition(ambulanceId: string, conditionCode: string, condition: Condition, options?: any): AxiosPromise<Condition> {
+            return localVarFp.updateCondition(ambulanceId, conditionCode, condition, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -195,6 +486,39 @@ export const AmbulanceConditionsApiFactory = function (configuration?: Configura
  */
 export interface AmbulanceConditionsApiInterface {
     /**
+     * Use this method to add new condition to the ambulance
+     * @summary Adds new condition to ambulance
+     * @param {string} ambulanceId pass the id of the particular ambulance
+     * @param {Condition} condition Condition to add
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulanceConditionsApiInterface
+     */
+    createCondition(ambulanceId: string, condition: Condition, options?: AxiosRequestConfig): AxiosPromise<Ambulance>;
+
+    /**
+     * Use this method to delete the specific condition from the ambulance.
+     * @summary Deletes specific condition
+     * @param {string} ambulanceId pass the id of the particular ambulance
+     * @param {string} conditionCode pass the code of the particular condition
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulanceConditionsApiInterface
+     */
+    deleteCondition(ambulanceId: string, conditionCode: string, options?: AxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * By using ambulanceId and conditionCode you can get details of particular condition
+     * @summary Provides details about condition
+     * @param {string} ambulanceId pass the id of the particular ambulance
+     * @param {string} conditionCode pass the code of the particular condition
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulanceConditionsApiInterface
+     */
+    getCondition(ambulanceId: string, conditionCode: string, options?: AxiosRequestConfig): AxiosPromise<Condition>;
+
+    /**
      * By using ambulanceId you get list of predefined conditions
      * @summary Provides the list of conditions associated with ambulance
      * @param {string} ambulanceId pass the id of the particular ambulance
@@ -203,6 +527,18 @@ export interface AmbulanceConditionsApiInterface {
      * @memberof AmbulanceConditionsApiInterface
      */
     getConditions(ambulanceId: string, options?: AxiosRequestConfig): AxiosPromise<Array<Condition>>;
+
+    /**
+     * Use this method to update content of the condition.
+     * @summary Updates specific condition
+     * @param {string} ambulanceId pass the id of the particular ambulance
+     * @param {string} conditionCode pass the code of the particular condition
+     * @param {Condition} condition Condition to update
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulanceConditionsApiInterface
+     */
+    updateCondition(ambulanceId: string, conditionCode: string, condition: Condition, options?: AxiosRequestConfig): AxiosPromise<Condition>;
 
 }
 
@@ -214,6 +550,45 @@ export interface AmbulanceConditionsApiInterface {
  */
 export class AmbulanceConditionsApi extends BaseAPI implements AmbulanceConditionsApiInterface {
     /**
+     * Use this method to add new condition to the ambulance
+     * @summary Adds new condition to ambulance
+     * @param {string} ambulanceId pass the id of the particular ambulance
+     * @param {Condition} condition Condition to add
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulanceConditionsApi
+     */
+    public createCondition(ambulanceId: string, condition: Condition, options?: AxiosRequestConfig) {
+        return AmbulanceConditionsApiFp(this.configuration).createCondition(ambulanceId, condition, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Use this method to delete the specific condition from the ambulance.
+     * @summary Deletes specific condition
+     * @param {string} ambulanceId pass the id of the particular ambulance
+     * @param {string} conditionCode pass the code of the particular condition
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulanceConditionsApi
+     */
+    public deleteCondition(ambulanceId: string, conditionCode: string, options?: AxiosRequestConfig) {
+        return AmbulanceConditionsApiFp(this.configuration).deleteCondition(ambulanceId, conditionCode, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * By using ambulanceId and conditionCode you can get details of particular condition
+     * @summary Provides details about condition
+     * @param {string} ambulanceId pass the id of the particular ambulance
+     * @param {string} conditionCode pass the code of the particular condition
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulanceConditionsApi
+     */
+    public getCondition(ambulanceId: string, conditionCode: string, options?: AxiosRequestConfig) {
+        return AmbulanceConditionsApiFp(this.configuration).getCondition(ambulanceId, conditionCode, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * By using ambulanceId you get list of predefined conditions
      * @summary Provides the list of conditions associated with ambulance
      * @param {string} ambulanceId pass the id of the particular ambulance
@@ -223,6 +598,20 @@ export class AmbulanceConditionsApi extends BaseAPI implements AmbulanceConditio
      */
     public getConditions(ambulanceId: string, options?: AxiosRequestConfig) {
         return AmbulanceConditionsApiFp(this.configuration).getConditions(ambulanceId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Use this method to update content of the condition.
+     * @summary Updates specific condition
+     * @param {string} ambulanceId pass the id of the particular ambulance
+     * @param {string} conditionCode pass the code of the particular condition
+     * @param {Condition} condition Condition to update
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulanceConditionsApi
+     */
+    public updateCondition(ambulanceId: string, conditionCode: string, condition: Condition, options?: AxiosRequestConfig) {
+        return AmbulanceConditionsApiFp(this.configuration).updateCondition(ambulanceId, conditionCode, condition, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -698,6 +1087,441 @@ export class AmbulanceWaitingListApi extends BaseAPI implements AmbulanceWaiting
      */
     public updateWaitingListEntry(ambulanceId: string, entryId: string, waitingListEntry: WaitingListEntry, options?: AxiosRequestConfig) {
         return AmbulanceWaitingListApiFp(this.configuration).updateWaitingListEntry(ambulanceId, entryId, waitingListEntry, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * AmbulancesApi - axios parameter creator
+ * @export
+ */
+export const AmbulancesApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Use this method to initialize new ambulance in the system
+         * @summary Saves new ambulance definition
+         * @param {Ambulance} ambulance Ambulance details to store
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createAmbulance: async (ambulance: Ambulance, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ambulance' is not null or undefined
+            assertParamExists('createAmbulance', 'ambulance', ambulance)
+            const localVarPath = `/ambulance`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(ambulance, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Use this method to delete the specific ambulance from the system.
+         * @summary Deletes specific ambulance
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteAmbulance: async (ambulanceId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ambulanceId' is not null or undefined
+            assertParamExists('deleteAmbulance', 'ambulanceId', ambulanceId)
+            const localVarPath = `/ambulance/{ambulanceId}`
+                .replace(`{${"ambulanceId"}}`, encodeURIComponent(String(ambulanceId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * By using ambulanceId you can get details of particular ambulance
+         * @summary Provides details about ambulance
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAmbulance: async (ambulanceId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ambulanceId' is not null or undefined
+            assertParamExists('getAmbulance', 'ambulanceId', ambulanceId)
+            const localVarPath = `/ambulance/{ambulanceId}`
+                .replace(`{${"ambulanceId"}}`, encodeURIComponent(String(ambulanceId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Use this method to get list of all ambulances
+         * @summary Provides the list of ambulances
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAmbulances: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/ambulance`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Use this method to update content of the ambulance.
+         * @summary Updates specific ambulance
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {Ambulance} ambulance Ambulance details to update
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateAmbulance: async (ambulanceId: string, ambulance: Ambulance, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ambulanceId' is not null or undefined
+            assertParamExists('updateAmbulance', 'ambulanceId', ambulanceId)
+            // verify required parameter 'ambulance' is not null or undefined
+            assertParamExists('updateAmbulance', 'ambulance', ambulance)
+            const localVarPath = `/ambulance/{ambulanceId}`
+                .replace(`{${"ambulanceId"}}`, encodeURIComponent(String(ambulanceId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(ambulance, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * AmbulancesApi - functional programming interface
+ * @export
+ */
+export const AmbulancesApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = AmbulancesApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Use this method to initialize new ambulance in the system
+         * @summary Saves new ambulance definition
+         * @param {Ambulance} ambulance Ambulance details to store
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createAmbulance(ambulance: Ambulance, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Ambulance>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createAmbulance(ambulance, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Use this method to delete the specific ambulance from the system.
+         * @summary Deletes specific ambulance
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteAmbulance(ambulanceId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteAmbulance(ambulanceId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * By using ambulanceId you can get details of particular ambulance
+         * @summary Provides details about ambulance
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAmbulance(ambulanceId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Ambulance>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAmbulance(ambulanceId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Use this method to get list of all ambulances
+         * @summary Provides the list of ambulances
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAmbulances(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Ambulance>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAmbulances(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Use this method to update content of the ambulance.
+         * @summary Updates specific ambulance
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {Ambulance} ambulance Ambulance details to update
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateAmbulance(ambulanceId: string, ambulance: Ambulance, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Ambulance>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateAmbulance(ambulanceId, ambulance, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * AmbulancesApi - factory interface
+ * @export
+ */
+export const AmbulancesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = AmbulancesApiFp(configuration)
+    return {
+        /**
+         * Use this method to initialize new ambulance in the system
+         * @summary Saves new ambulance definition
+         * @param {Ambulance} ambulance Ambulance details to store
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createAmbulance(ambulance: Ambulance, options?: any): AxiosPromise<Ambulance> {
+            return localVarFp.createAmbulance(ambulance, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Use this method to delete the specific ambulance from the system.
+         * @summary Deletes specific ambulance
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteAmbulance(ambulanceId: string, options?: any): AxiosPromise<void> {
+            return localVarFp.deleteAmbulance(ambulanceId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * By using ambulanceId you can get details of particular ambulance
+         * @summary Provides details about ambulance
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAmbulance(ambulanceId: string, options?: any): AxiosPromise<Ambulance> {
+            return localVarFp.getAmbulance(ambulanceId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Use this method to get list of all ambulances
+         * @summary Provides the list of ambulances
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAmbulances(options?: any): AxiosPromise<Array<Ambulance>> {
+            return localVarFp.getAmbulances(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Use this method to update content of the ambulance.
+         * @summary Updates specific ambulance
+         * @param {string} ambulanceId pass the id of the particular ambulance
+         * @param {Ambulance} ambulance Ambulance details to update
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateAmbulance(ambulanceId: string, ambulance: Ambulance, options?: any): AxiosPromise<Ambulance> {
+            return localVarFp.updateAmbulance(ambulanceId, ambulance, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * AmbulancesApi - interface
+ * @export
+ * @interface AmbulancesApi
+ */
+export interface AmbulancesApiInterface {
+    /**
+     * Use this method to initialize new ambulance in the system
+     * @summary Saves new ambulance definition
+     * @param {Ambulance} ambulance Ambulance details to store
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulancesApiInterface
+     */
+    createAmbulance(ambulance: Ambulance, options?: AxiosRequestConfig): AxiosPromise<Ambulance>;
+
+    /**
+     * Use this method to delete the specific ambulance from the system.
+     * @summary Deletes specific ambulance
+     * @param {string} ambulanceId pass the id of the particular ambulance
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulancesApiInterface
+     */
+    deleteAmbulance(ambulanceId: string, options?: AxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * By using ambulanceId you can get details of particular ambulance
+     * @summary Provides details about ambulance
+     * @param {string} ambulanceId pass the id of the particular ambulance
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulancesApiInterface
+     */
+    getAmbulance(ambulanceId: string, options?: AxiosRequestConfig): AxiosPromise<Ambulance>;
+
+    /**
+     * Use this method to get list of all ambulances
+     * @summary Provides the list of ambulances
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulancesApiInterface
+     */
+    getAmbulances(options?: AxiosRequestConfig): AxiosPromise<Array<Ambulance>>;
+
+    /**
+     * Use this method to update content of the ambulance.
+     * @summary Updates specific ambulance
+     * @param {string} ambulanceId pass the id of the particular ambulance
+     * @param {Ambulance} ambulance Ambulance details to update
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulancesApiInterface
+     */
+    updateAmbulance(ambulanceId: string, ambulance: Ambulance, options?: AxiosRequestConfig): AxiosPromise<Ambulance>;
+
+}
+
+/**
+ * AmbulancesApi - object-oriented interface
+ * @export
+ * @class AmbulancesApi
+ * @extends {BaseAPI}
+ */
+export class AmbulancesApi extends BaseAPI implements AmbulancesApiInterface {
+    /**
+     * Use this method to initialize new ambulance in the system
+     * @summary Saves new ambulance definition
+     * @param {Ambulance} ambulance Ambulance details to store
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulancesApi
+     */
+    public createAmbulance(ambulance: Ambulance, options?: AxiosRequestConfig) {
+        return AmbulancesApiFp(this.configuration).createAmbulance(ambulance, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Use this method to delete the specific ambulance from the system.
+     * @summary Deletes specific ambulance
+     * @param {string} ambulanceId pass the id of the particular ambulance
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulancesApi
+     */
+    public deleteAmbulance(ambulanceId: string, options?: AxiosRequestConfig) {
+        return AmbulancesApiFp(this.configuration).deleteAmbulance(ambulanceId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * By using ambulanceId you can get details of particular ambulance
+     * @summary Provides details about ambulance
+     * @param {string} ambulanceId pass the id of the particular ambulance
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulancesApi
+     */
+    public getAmbulance(ambulanceId: string, options?: AxiosRequestConfig) {
+        return AmbulancesApiFp(this.configuration).getAmbulance(ambulanceId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Use this method to get list of all ambulances
+     * @summary Provides the list of ambulances
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulancesApi
+     */
+    public getAmbulances(options?: AxiosRequestConfig) {
+        return AmbulancesApiFp(this.configuration).getAmbulances(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Use this method to update content of the ambulance.
+     * @summary Updates specific ambulance
+     * @param {string} ambulanceId pass the id of the particular ambulance
+     * @param {Ambulance} ambulance Ambulance details to update
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbulancesApi
+     */
+    public updateAmbulance(ambulanceId: string, ambulance: Ambulance, options?: AxiosRequestConfig) {
+        return AmbulancesApiFp(this.configuration).updateAmbulance(ambulanceId, ambulance, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -16,6 +16,8 @@ tags:
     description: Ambulance Waiting List API
   - name: ambulanceConditions
     description: Patient conditions and symptoms handled in the ambulance
+  - name: ambulances
+    description: Ambulance details
 paths:
   "/waiting-list/{ambulanceId}/entries":
     get:
@@ -219,6 +221,281 @@ paths:
                   $ref: "#/components/examples/ConditionsListExample"
         "404":
           description: Ambulance with such ID does not exists
+    post:
+      tags:
+        - ambulanceConditions
+      summary: Adds new condition to ambulance
+      operationId: createCondition
+      description: Use this method to add new condition to the ambulance
+      parameters:
+        - in: path
+          name: ambulanceId
+          description: pass the id of the particular ambulance
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Condition"
+            examples:
+              request-sample:
+                $ref: "#/components/examples/ConditionExample"
+        description: Condition to add
+        required: true
+      responses:
+        "200":
+          description: >-
+            Value of the ambulance with updated content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ambulance"
+              examples:
+                response:
+                  $ref: "#/components/examples/AmbulanceExample"
+        "400":
+          description: Missing mandatory properties of input object.
+        "404":
+          description: Ambulance with such ID does not exist
+  "/waiting-list/{ambulanceId}/condition/{conditionCode}":
+    get:
+      tags:
+        - ambulanceConditions
+      summary: Provides details about condition
+      operationId: getCondition
+      description: By using ambulanceId and conditionCode you can get details of particular condition
+      parameters:
+        - in: path
+          name: ambulanceId
+          description: pass the id of the particular ambulance
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: conditionCode
+          description: pass the code of the particular condition
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: value of the condition
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Condition"
+              examples:
+                response:
+                  $ref: "#/components/examples/ConditionExample"
+        "404":
+          description: Ambulance or Condition with such ID does not exist
+    put:
+      tags:
+        - ambulanceConditions
+      summary: Updates specific condition
+      operationId: updateCondition
+      description: Use this method to update content of the condition.
+      parameters:
+        - in: path
+          name: ambulanceId
+          description: pass the id of the particular ambulance
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: conditionCode
+          description: pass the code of the particular condition
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Condition"
+            examples:
+              request:
+                $ref: "#/components/examples/ConditionExample"
+        description: Condition to update
+        required: true
+      responses:
+        "200":
+          description: >-
+            value of the condition with updated content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Condition"
+              examples:
+                response:
+                  $ref: "#/components/examples/ConditionExample"
+        "403":
+          description: >-
+            Value of the conditionID and the data id is mismatching. Details are
+            provided in the response body.
+        "404":
+          description: Ambulance or Condition with such ID does not exist
+    delete:
+      tags:
+        - ambulanceConditions
+      summary: Deletes specific condition
+      operationId: deleteCondition
+      description: Use this method to delete the specific condition from the ambulance.
+      parameters:
+        - in: path
+          name: ambulanceId
+          description: pass the id of the particular ambulance
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: conditionCode
+          description: pass the code of the particular condition
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Item deleted
+        "404":
+          description: Ambulance or Condition with such ID does not exist
+  "/ambulance":
+    get:
+      tags:
+        - ambulances
+      summary: Provides the list of ambulances
+      operationId: getAmbulances
+      description: Use this method to get list of all ambulances
+      responses:
+        "200":
+          description: value of the ambulances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ambulance"
+              examples:
+                response:
+                  $ref: "#/components/examples/AmbulanceListExample"
+    post:
+      tags:
+        - ambulances
+      summary: Saves new ambulance definition
+      operationId: createAmbulance
+      description: Use this method to initialize new ambulance in the system
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Ambulance"
+            examples:
+              request-sample:
+                $ref: "#/components/examples/AmbulanceExample"
+        description: Ambulance details to store
+        required: true
+      responses:
+        "200":
+          description: >-
+            Value of stored ambulance
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ambulance"
+              examples:
+                updated-response:
+                  $ref: "#/components/examples/AmbulanceExample"
+        "400":
+          description: Missing mandatory properties of input object.
+        "409":
+          description: Entry with the specified id already exists
+  "/ambulance/{ambulanceId}":
+    get:
+      tags:
+        - ambulances
+      summary: Provides details about ambulance
+      operationId: getAmbulance
+      description: By using ambulanceId you can get details of particular ambulance
+      parameters:
+        - in: path
+          name: ambulanceId
+          description: pass the id of the particular ambulance
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: value of the ambulance
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ambulance"
+              examples:
+                response:
+                  $ref: "#/components/examples/AmbulanceExample"
+        "404":
+          description: Ambulance with such ID does not exist
+    put:
+      tags:
+        - ambulances
+      summary: Updates specific ambulance
+      operationId: updateAmbulance
+      description: Use this method to update content of the ambulance.
+      parameters:
+        - in: path
+          name: ambulanceId
+          description: pass the id of the particular ambulance
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Ambulance"
+            examples:
+              request:
+                $ref: "#/components/examples/AmbulanceExample"
+        description: Ambulance details to update
+        required: true
+      responses:
+        "200":
+          description: >-
+            value of the ambulance with updated content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ambulance"
+              examples:
+                response:
+                  $ref: "#/components/examples/AmbulanceExample"
+        "403":
+          description: >-
+            Value of the ambulanceID and the data id is mismatching. Details are
+            provided in the response body.
+        "404":
+          description: Ambulance with such ID does not exist
+    delete:
+      tags:
+        - ambulances
+      summary: Deletes specific ambulance
+      operationId: deleteAmbulance
+      description: Use this method to delete the specific ambulance from the system.
+      parameters:
+        - in: path
+          name: ambulanceId
+          description: pass the id of the particular ambulance
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Item deleted
+        "404":
+          description: Ambulance with such ID does not exist
+
 components:
   schemas:
     WaitingListEntry:
@@ -280,6 +557,31 @@ components:
           example: 20
       example:
         $ref: "#/components/examples/ConditionExample"
+    Ambulance:
+      type: object
+      required: [ "id", "name", "roomNumber"]
+      properties:
+        id:
+          type: string
+          example: dentist-warenova
+          description: Unique identifier of the ambulance
+        name:
+          type: string
+          example: Zubná ambulancia Dr. Warenová
+          description: Human readable display name of the ambulance
+        roomNumber:
+          type: string
+          example: 356 - 3.posch
+        waitingList:
+          type: array
+          items:
+            $ref: '#/components/schemas/WaitingListEntry'
+        predefinedConditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Condition'
+      example:
+        $ref: "#/components/examples/AmbulanceExample"
   examples:
     WaitingListEntryExample:
       summary: Ľudomír Zlostný waiting
@@ -352,3 +654,97 @@ components:
         - value: Odber krvi
           code: blood-test
           typicalDurationMinutes: 10
+    AmbulanceListExample:
+      summary: List of ambulances
+      description: |
+        Example list of ambulances in the hospital
+      value:
+        - id: dentist-warenova
+          name: Zubná ambulancia Dr. Warenová
+          roomNumber: 356 - 3.posch
+          waitingList:
+            - id: x321ab3
+              name: Jožko Púčik
+              patientId: 460527-jozef-pucik
+              waitingSince: "2038-12-24T10:05:00.000Z"
+              estimatedStart: "2038-12-24T10:35:00.000Z"
+              estimatedDurationMinutes: 15
+              condition:
+                value: Teploty
+                code: subfebrilia
+                reference: "https://zdravoteka.sk/priznaky/zvysena-telesna-teplota/"
+            - id: x321ab4
+              name: Ferdinand Trety
+              patientId: 780907-ferdinand-tre
+              waitingSince: "2038-12-24T10:25:00.000Z"
+              estimatedStart: "2038-12-24T10:50:00.000Z"
+              estimatedDurationMinutes: 25
+              condition:
+                value: Nevoľnosť
+                code: nausea
+                reference: "https://zdravoteka.sk/priznaky/nevolnost/"
+          predefinedConditions:
+            - value: Teploty
+              code: subfebrilia
+              reference: "https://zdravoteka.sk/priznaky/zvysena-telesna-teplota/"
+              typicalDurationMinutes: 20
+            - value: Nevoľnosť
+              code: nausea
+              reference: "https://zdravoteka.sk/priznaky/nevolnost/"
+              typicalDurationMinutes: 45
+            - value: Kontrola
+              code: followup
+              typicalDurationMinutes: 15
+            - value: Administratívny úkon
+              code: administration
+              typicalDurationMinutes: 10
+            - value: Odber krvi
+              code: blood-test
+              typicalDurationMinutes: 10
+    AmbulanceExample:
+      summary: Sample GP ambulance
+      description: |
+        Example of GP ambulance with waiting list and predefined conditions
+      value:
+        id: gp-warenova
+        name: Ambulancia všeobecného lekárstva Dr. Warenová
+        roomNumber: 356 - 3.posch
+        waitingList:
+          - id: x321ab3
+            name: Jožko Púčik
+            patientId: 460527-jozef-pucik
+            waitingSince: "2038-12-24T10:05:00.000Z"
+            estimatedStart: "2038-12-24T10:35:00.000Z"
+            estimatedDurationMinutes: 15
+            condition:
+            value: Teploty
+            code: subfebrilia
+            reference: "https://zdravoteka.sk/priznaky/zvysena-telesna-teplota/"
+          - id: x321ab4
+            name: Ferdinand Trety
+            patientId: 780907-ferdinand-tre
+            waitingSince: "2038-12-24T10:25:00.000Z"
+            estimatedStart: "2038-12-24T10:50:00.000Z"
+            estimatedDurationMinutes: 25
+            condition:
+            value: Nevoľnosť
+            code: nausea
+            reference: "https://zdravoteka.sk/priznaky/nevolnost/"
+        predefinedConditions:
+          - value: Teploty
+            code: subfebrilia
+            reference: "https://zdravoteka.sk/priznaky/zvysena-telesna-teplota/"
+            typicalDurationMinutes: 20
+          - value: Nevoľnosť
+            code: nausea
+            reference: "https://zdravoteka.sk/priznaky/nevolnost/"
+            typicalDurationMinutes: 45
+          - value: Kontrola
+            code: followup
+            typicalDurationMinutes: 15
+          - value: Administratívny úkon
+            code: administration
+            typicalDurationMinutes: 10
+          - value: Odber krvi
+            code: blood-test
+            typicalDurationMinutes: 10
